@@ -1,12 +1,22 @@
 
 import * as React from 'react';
-import { Text} from 'react-native';
+import { Text,View} from 'react-native';
 import { Button, Card, Icon } from 'react-native-elements';
 import { API_URL } from "@env"
+import {StylosFont} from '../FontTrajan';
 
-const Experiencia = ({ item,navigation }) => (
+
+
+const Experiencia = ({ item,navigation }) => {
+  return(
     <Card
-      title={item.titulo_experiencia}
+      
+      title={
+      <View>
+        <Text style={StylosFont.fuenteCentrada}>{item.titulo_experiencia}</Text>
+      </View>
+      }
+      featuredTitleStyle={{fontFamily: 'Trajan'}}
       image={{
         uri: `${API_URL}${item.imagen_experiencia}`,
       }}>
@@ -22,6 +32,6 @@ const Experiencia = ({ item,navigation }) => (
         })}
       />
     </Card>
-  );
+  )};
 
   export {Experiencia}

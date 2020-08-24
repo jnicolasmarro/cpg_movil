@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Button, Image, Input} from 'react-native-elements';
 import {getUserToken} from '../Storage/userToken'
-
+import * as Font from 'expo-font';
 import { API_URL } from "@env"
 
 
@@ -194,6 +194,9 @@ const storeData = async (value) => {
 
 
 export default function App({ navigation }) {
+  const [loaded] = Font.useFonts({
+    Trajan: require('../assets/fonts/Trajan.ttf'),
+  });
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {

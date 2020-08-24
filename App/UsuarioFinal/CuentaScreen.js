@@ -7,6 +7,7 @@ import { API_URL } from "@env"
 import {UserContext} from '../../context/UserContext'
 import {getUserToken} from '../../Storage/userToken'
 import {getUser} from './getUsuario'
+import {StylosFont} from '../FontTrajan';
 
 
 
@@ -67,6 +68,7 @@ function CuentaScreen({ navigation }) {
     const [contraseñaNueva, setContraseñaNueva] = React.useState("");
     const [actualizado, setActualizado] = React.useState(false);
     React.useEffect(() => {
+      console.log(userContext)
     }, [actualizado])
   
    
@@ -136,7 +138,7 @@ function CuentaScreen({ navigation }) {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <StatusBar hidden={true} />
-        <Text style={StylosCPG.titulo}>MI CUENTA DE USUARIO</Text>
+        <Text style={[StylosCPG.titulo,StylosFont.fuenteCentrada]}>MI CUENTA DE USUARIO</Text>
         <Input
           placeholder='NOMBRE'
           inputStyle={StylosCPG.input}
