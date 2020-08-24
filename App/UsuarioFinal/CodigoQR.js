@@ -5,6 +5,7 @@ import {getUserToken} from '../../Storage/userToken'
 import { ActivityIndicatorCPG } from '../ActivityIndicatorCPG'
 import { FailConnectionCPG } from '../FailConnectionCPG'
 import { API_URL } from "@env"
+import { Icon, Button, Image } from 'react-native-elements';
 
 
 
@@ -63,11 +64,16 @@ function CodigoQR({route,navigation}) {
         <FailConnectionCPG/>
 
       ):(
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:'#d0d0d0' }}>
+          <View style={{ margin:10, width:200, height:'auto', backgroundColor:"#5fa39d", padding:10,borderRadius:15, marginBottom:20,}}>
+          <Text style={{textAlign:'center', color:'#FFFFFF'}}>Valida el codigo QR con el Establecimiento seleccionado.</Text>
+        </View>
         <QRCode
         value={codigo_encriptado}
         size={200}
       />
+        
       </View>
       )
      

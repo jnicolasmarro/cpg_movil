@@ -10,14 +10,14 @@ function HeaderCpg({ navigation }) {
     const StylosCPG = StyleSheet.create({
       headercpg: {
         height: 50,
-        backgroundColor: "#e95238",
+        backgroundColor:"#5fa39d",
         padding: 10,
       },
     });
     
     return (
       <View style={StylosCPG.headercpg}>
-        <Text style={StylosFont.fuenteCentrada} >{userContext.nombre_usuario}</Text>
+        <Text style={StylosFont.fuenteCentradaBlanco} >{userContext.nombre_usuario}</Text>
       </View>
     );
   }

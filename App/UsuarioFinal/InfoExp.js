@@ -5,9 +5,12 @@ import { getUserToken } from '../../Storage/userToken'
 import { API_URL } from "@env"
 import { ActivityIndicatorCPG } from '../ActivityIndicatorCPG'
 import { FailConnectionCPG } from '../FailConnectionCPG'
+import {StylosFont} from '../FontTrajan';
 
 const Item = ({ item }) => (
     <Card
+        featuredTitleStyle={StylosCPG.tituloItem}
+        containerStyle={StylosCPG.bRedondo}
         title={item.titulo_item} titleStyle={StylosCPG.tituloItem}>
         <Text style={{ marginBottom: 10 }}>
             {item.descripcion_item}
@@ -175,7 +178,9 @@ const StylosCPG = StyleSheet.create({
     },
     colorBoton:{
       backgroundColor:"#A99169",
-      marginTop:20
+      marginTop:20,
+      padding:10,
+      margin:10,
     },
   
     headercpg:{
@@ -232,7 +237,12 @@ const StylosCPG = StyleSheet.create({
    },
    tituloExpTexto:{
     color:'#FFFFFF',
-    fontSize:25,
+    fontSize:30,
+    fontFamily: 'Trajan',
+    textShadowColor:'#26242F',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10
+    
   
    },
    info:{
@@ -254,7 +264,8 @@ const StylosCPG = StyleSheet.create({
    costoInfo:{
      color:'#FFFFFF',
      fontSize:20,
-     marginTop:-1,
+     marginTop:2,
+     fontFamily:'Trajan'
     
    },
    costoInfoPeque:{
@@ -273,9 +284,13 @@ const StylosCPG = StyleSheet.create({
   textAlign:'left',
   color:'#9d7f4f',
   fontSize:20,
+  fontFamily:'Trajan'
   },
   imgLogo:{
     height:50
+  },
+  bRedondo:{
+    borderRadius:15,
   }
   })
 

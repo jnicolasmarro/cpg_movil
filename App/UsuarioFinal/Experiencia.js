@@ -1,10 +1,24 @@
 
 import * as React from 'react';
-import { Text,View} from 'react-native';
+import { Text,View,StyleSheet} from 'react-native';
 import { Button, Card, Icon } from 'react-native-elements';
 import { API_URL } from "@env"
 import {StylosFont} from '../FontTrajan';
 
+const StylosCPG = StyleSheet.create({
+  tituloCard: {
+    padding: 10,
+    justifyContent: 'center',
+   backgroundColor:"#5fa39d",
+    color:"#FFFFFF",
+    borderTopLeftRadius:10,
+    borderTopRightRadius:10,
+  },
+  bRedondo:{
+    borderRadius:10,
+  },
+ 
+});
 
 
 const Experiencia = ({ item,navigation }) => {
@@ -12,21 +26,22 @@ const Experiencia = ({ item,navigation }) => {
     <Card
       
       title={
-      <View>
-        <Text style={StylosFont.fuenteCentrada}>{item.titulo_experiencia}</Text>
+      <View style={StylosCPG.tituloCard}>
+        <Text style={StylosFont.fuenteCentradaBlanco}>{item.titulo_experiencia}</Text>
       </View>
       }
-      featuredTitleStyle={{fontFamily: 'Trajan'}}
+      containerStyle={StylosCPG.bRedondo}
+      featuredTitleStyle={{fontFamily: 'Trajan',}}
       image={{
         uri: `${API_URL}${item.imagen_experiencia}`,
       }}>
-      <Text style={{ marginBottom: 10 }}>
+      <Text style={{ marginBottom: 10, fontSize:14}}>
   {item.descripcion_experiencia}
       </Text>
       <Button
-        icon={<Icon name='code' color='#ffffff' />}
+        
         buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0,backgroundColor:"#A99169" }}
-        title='INFORMACION'
+        title='INFORMACIÓN'
         onPress={() => navigation.navigate('InfoExp',{
           id_experiencia: item.id_experiencia
         })}

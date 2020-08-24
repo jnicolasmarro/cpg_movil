@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { View, StyleSheet, Text, ActivityIndicator,SafeAreaView,ScrollView,StatusBar } from 'react-native';
 import { Button, Image} from 'react-native-elements';
-import Swiper from 'react-native-swiper'
+import Swiper from 'react-native-swiper';
+import {StylosFont} from '../FontTrajan';
 
 
 import {HeaderCpg} from './HeaderCpg'
@@ -43,22 +44,31 @@ function HomeScreen({ navigation }) {
         backgroundColor: "#e95238"
       },
       imgInicio: {
-        height: 150,
-        width: 396,
+        height: "100%",
+        width: "100%",
+        borderRadius:15,
       },
       imgContenedor: {
-        marginBottom: 10,
+        marginBottom: 15,
+        height:170,
+        
       },
       imgTexto: {
         backgroundColor: "#111111",
-        opacity: 0.7,
+        /*opacity: 0.7,*/
         padding: 10,
-        marginTop: -39,
-        color: "#FFFFFF"
+        marginTop: -37,
+        color: "#FFFFFF",
+        borderBottomEndRadius:15,
+        borderBottomStartRadius:15,
+        
+        
       },
       imgTextoColor: {
-        color: "#FFFFFF",
+        color: "#A99169",
         textAlign: 'right',
+        fontFamily: 'Trajan',
+        fontSize:18,
       },
       headerTop: {
         position: 'absolute',

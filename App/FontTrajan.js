@@ -4,6 +4,14 @@ const StylosFont = StyleSheet.create({
         fontFamily: 'Trajan',
         textAlign: 'center' 
     },
+    fuenteCentradaBlanco: {
+        fontFamily: 'Trajan',
+        textAlign: 'center',
+        color:'#FFFFFF',
+        fontSize:20,
+    
+
+    },
   });
 
 export {
