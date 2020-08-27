@@ -14,6 +14,7 @@ import { getUserToken } from '../../Storage/userToken'
 import { ActivityIndicatorCPG } from '../ActivityIndicatorCPG'
 import {AuthContext} from '../../context/AuthContext'
 import {setUser} from './setUser'
+import {InfoExp} from './InfoExp'
 
 const Tab = createBottomTabNavigator();
 
@@ -210,6 +211,7 @@ function AdminInicioStackScreen() {
   return (
     <AdminInicioStack.Navigator screenOptions={{ headerShown: false }}>
       <AdminInicioStack.Screen name="AdminInicio" component={AdminInicioScreen} />
+      <AdminInicioStack.Screen name="InfoExp" component={InfoExp} />
       {/* other screens */}
     </AdminInicioStack.Navigator>
   );

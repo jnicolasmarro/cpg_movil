@@ -1,11 +1,13 @@
 import * as React from 'react';
-import {SafeAreaView,StatusBar,FlatList} from 'react-native'
+import {SafeAreaView,StatusBar,FlatList,Alert} from 'react-native'
 import {Experiencia} from './Experiencia'
 import {ActivityIndicatorCPG} from '../ActivityIndicatorCPG'
 import {getUserToken} from '../../Storage/userToken'
 import {SinExperiencias} from './SinExperiencias'
 import { API_URL } from "@env";
-
+import {FlingGestureHandler,Directions,State,PanGestureHandler } from 'react-native-gesture-handler';
+import { RefreshControl} from 'react-native'
+import {FailConnectionCPG} from '../FailConnectionCPG'
 
 
 function AdminInicioScreen ({ navigation }) {
@@ -37,6 +39,24 @@ function AdminInicioScreen ({ navigation }) {
       });
   }
 
+  const traeExperienciasP = async () => {
+    setLoading(true)
+    let token = await getUserToken()
+    await fetchExperiencias(token)
+      .then(experiencias => {
+        if(experiencias.experiencias.length==0){
+          setNo_disponibles(true)
+        }
+        setExperiencias(experiencias.experiencias)
+        setLoading(false)
+      })
+      .catch(() => {
+        setFailConnection(true)
+        setLoading(false)
+      })
+
+  }
+
   React.useEffect(() => {
     const traeExperiencias = async () => {
       let token = await getUserToken()
@@ -54,10 +74,13 @@ function AdminInicioScreen ({ navigation }) {
         })
 
     }
-    traeExperiencias()
+    traeExperienciasP()
   },[])
 
-
+  const config = {
+    velocityThreshold: 0.1,
+    directionalOffsetThreshold: 80
+  };
 
   return (
 
@@ -72,14 +95,26 @@ function AdminInicioScreen ({ navigation }) {
           no_disponibles?(
           <SinExperiencias/>
           ):(
+            
           <SafeAreaView>
               <StatusBar hidden={true} />
               <FlatList
         data={disponibles_experiencias}
         renderItem={renderItem}
         keyExtractor={item => item.id_experiencia.toString()}
+        refreshControl={
+          <RefreshControl
+            //refresh control used for the Pull to Refresh
+            refreshing={isLoading}
+            onRefresh={()=>{traeExperienciasP()
+            
+            }}
+          />
+        }
       />
             </SafeAreaView>
+            
+           
           )
             
 
