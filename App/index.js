@@ -13,6 +13,8 @@ import {SplashScreen} from './SplashScreen'
 
 import {TabUsuarioScreen} from './UsuarioFinal/TabUsuarioScreen'
 import {Admin} from './AdminEstablecimiento/TabAdminScreen'
+import Asis from './Asistente/Asis'
+
 //
 
 import {SignUpScreen} from './SignUpScreen'
@@ -231,7 +233,9 @@ export default function App({ navigation }) {
     if(rol == 2)
     return TabUsuarioScreen;
     if(rol == 3)
-    return Admin;
+    return Admin
+    if(rol == 4)
+    return Asis
 
     return null;
   }

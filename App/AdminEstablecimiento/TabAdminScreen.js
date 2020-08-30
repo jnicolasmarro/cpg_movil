@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator, StackView } from '@react-navigation/stack'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AdminInicioScreen from './AdminInicioScreen'
-import AdminQrScreen from './AdminQrScreen'
+import QRReaer from '../QRReader';
 import AdminCrearScreen from './AdminCrearScreen'
 import { UserContext } from '../../context/UserContext'
 import { getUser } from './getAdminEstablecimiento'
@@ -15,18 +15,12 @@ import { ActivityIndicatorCPG } from '../ActivityIndicatorCPG'
 import {AuthContext} from '../../context/AuthContext'
 import {setUser} from './setUser'
 import {InfoExp} from './InfoExp'
+import {Estadisticas} from './Estadisticas'
+import {RedencionesMes} from './RedencionesMes'
+import {ClientesEstablecimiento} from './ClientesEstablecimiento'
 
 const Tab = createBottomTabNavigator();
 
-
-
-function AdminEstaScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Estadistica</Text>
-    </View>
-  );
-}
 
 function AdminCuentaScreen() {
 
@@ -221,7 +215,7 @@ const AdminQrStack = createStackNavigator();
 function AdminQrStackScreen() {
   return (
     <AdminQrStack.Navigator screenOptions={{ headerShown: false }}>
-      <AdminQrStack.Screen name="AdminQr" component={AdminQrScreen} />
+      <AdminQrStack.Screen name="AdminQr" component={QRReaer} />
       {/* other screens */}
     </AdminQrStack.Navigator>
   );
@@ -242,8 +236,9 @@ const AdminEstaStack = createStackNavigator();
 function AdminEstaStackScreen() {
   return (
     <AdminEstaStack.Navigator screenOptions={{ headerShown: false }}>
-      <AdminEstaStack.Screen name="AdminEsta" component={AdminEstaScreen} />
-      {/* other screens */}
+      <AdminEstaStack.Screen name="Estadisticas" component={Estadisticas} />
+      <AdminEstaStack.Screen name="RedencionesMes" component={RedencionesMes} />
+      <AdminEstaStack.Screen name="ClientesEstablecimiento" component={ClientesEstablecimiento} />
     </AdminEstaStack.Navigator>
   );
 }
