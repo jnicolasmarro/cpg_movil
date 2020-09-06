@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Alert } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import {getUserToken} from '../../Storage/userToken'
 import { ActivityIndicatorCPG } from '../ActivityIndicatorCPG'
@@ -35,23 +35,60 @@ function CodigoQR({route,navigation}) {
       });
 
   }
+
+
+
+  const escuchando = (token)=>{
+    return fetch(`${API_URL}/experiencia/escuchandoRespuesta/${id_usuario}/${id_experiencia}`, {
+      method: 'GET',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token.token,
+          id_user: token.header_id_user
+      }
+  })
+      .then((response) => response.json())
+      .then((json) => {
+         
+          if(json.error){
+            Alert.alert('Error',json.error)
+          }
+          if(json.success){
+            Alert.alert('Gracias','Experiencia validada', [
+              { text: "OK", onPress: () => {navigation.navigate('Inicio')} }
+            ],
+            { cancelable: false })
+          }
+      })
+      .catch((error) => {
+          throw error
+      });
+
+  }
+
+
+
   React.useEffect(()=>{
     const getCodigo = async () =>{
       let token = await getUserToken();
+      let token2 = await getUserToken();
       await fetchCodigo(token)
                 .then(codigo => {
                     setCodigo_encriptado(`${codigo.id_usuario} ${codigo.id_experiencia}`)
                     setLoading(false)
-                })
+                    
+                })    
                 .catch(() => {
                     setFailConnection(true)
                     setLoading(false)
                 })
 
-
+                escuchando(token2)
 
     }
     getCodigo();
+
   },[])
 
 
