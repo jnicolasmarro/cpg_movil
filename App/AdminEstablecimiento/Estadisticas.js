@@ -69,11 +69,11 @@ function Estadisticas({ navigation }) {
                                     title="TUS CLIENTES"
                                     color="#A99169"
                                     onPress={() => {
-                                        navigation.navigate('ClientesEstablecimiento',{
-                                       data: estadisticas.usuarios
-                                     });
-                                     
-                                   }}
+                                        navigation.navigate('ClientesEstablecimiento', {
+                                            data: estadisticas.usuarios
+                                        });
+
+                                    }}
                                 />
                                 <Button
                                     title="REDENCIONES POR MES"
