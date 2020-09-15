@@ -6,7 +6,7 @@ import { Button, Image, Input} from 'react-native-elements';
 import {getUserToken} from '../Storage/userToken'
 import * as Font from 'expo-font';
 import { API_URL } from "@env"
-
+import * as Linking from 'expo-linking';
 
 // Screens
 import {SplashScreen} from './SplashScreen'
@@ -118,7 +118,16 @@ function SignInScreen({ navigation }) {
             buttonStyle={StylosCPG.colorBoton}
           />
         </View>
-        <Button title="IR ATRAS" onPress={() => navigation.goBack()} buttonStyle={StylosCPG.colorBoton} />
+        
+        <View>
+      <Button
+        title="Olvidé mi contraseña"
+        type="clear"
+        onPress={() => {
+          Linking.openURL(`${API_URL}/auth/solicitar_cambio`);
+        }}
+      />
+      </View>
       </View>
     </View>
   );
@@ -180,7 +189,9 @@ function Inicial({ navigation }) {
           title="REGISTRARSE"
           onPress={() => navigation.navigate('SingUp')}
           buttonStyle={StylosCPG.colorBoton}
-        /></View>
+        />
+      </View>
+      
     </View>
   );
 }

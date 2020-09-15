@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Text} from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -15,6 +16,7 @@ import { RedencionesMes } from './RedencionesMes'
 import { ClientesEstablecimiento } from './ClientesEstablecimiento'
 import { AdminCuentaStackScreen } from './AdminCuentaStack'
 import { FailConnectionCPG } from '../FailConnectionCPG'
+import {Asistentes} from './Asistentes'
 
 const Tab = createBottomTabNavigator();
 
@@ -63,6 +65,12 @@ function AdminEstaStackScreen() {
 }
 
 
+const Texto = ()=>{
+  return(
+  <Text  style={{fontSize: 9, fontWeight:'normal',color:'grey',textAlign:'center'}}>{`Crear \n Asistente`}</Text>
+  )
+}
+
 function Admin({ navigation }) {
   const [isLoading, setLoading] = React.useState(true)
   const [userContext, setUserContext] = React.useState(null)
@@ -94,7 +102,7 @@ function Admin({ navigation }) {
           <FailConnectionCPG />
         ) : (
             <UserContext.Provider value={value}>
-              <Tab.Navigator activeColor="#59E811" style={{ backgroundColor: '#e91e63' }}  >
+              <Tab.Navigator activeColor="#59E811" style={{ backgroundColor: '#e91e63'}}  >
                 <Tab.Screen name="AdminInicio" component={AdminInicioStackScreen} options={{
                   tabBarLabel: 'Inicio', tabBarIcon: ({ color }) => (
                     <MaterialCommunityIcons name="home" color={color} size={26} />),
@@ -104,8 +112,12 @@ function Admin({ navigation }) {
                     <MaterialCommunityIcons name="qrcode" color={color} size={26} />),
                 }} />
                 <Tab.Screen name="AdminCrear" component={AdminCrearStackScreen} options={{
-                  tabBarLabel: 'Crear Asistente', tabBarIcon: ({ color }) => (
+                  tabBarLabel: Texto, tabBarIcon: ({ color }) => (
                     <MaterialCommunityIcons name="account-multiple-plus" color={color} size={26} />),
+                }} />
+                <Tab.Screen name="Asistentes" component={Asistentes} options={{
+                  tabBarLabel: 'Asistentes', tabBarIcon: ({ color }) => (
+                    <MaterialCommunityIcons name="account-group" color={color} size={26} />),
                 }} />
                 <Tab.Screen name="AdminEsta" component={AdminEstaStackScreen} options={{
                   tabBarLabel: 'Estadisticas', tabBarIcon: ({ color }) => (

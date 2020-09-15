@@ -1,10 +1,6 @@
 import * as React from 'react';
 import { View, Text } from 'react-native';
 import { Button } from 'react-native-elements'
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator, StackView } from '@react-navigation/stack'
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Linking from 'expo-linking';
 import { ActivityIndicatorCPG } from '../ActivityIndicatorCPG'
 import { FailConnectionCPG } from '../FailConnectionCPG'

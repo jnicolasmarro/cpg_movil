@@ -39,7 +39,7 @@ function AdminInicioScreen ({ navigation }) {
       });
   }
 
-  const traeExperienciasP = async () => {
+  const traeExperiencias = async () => {
     setLoading(true)
     let token = await getUserToken()
     await fetchExperiencias(token)
@@ -58,29 +58,10 @@ function AdminInicioScreen ({ navigation }) {
   }
 
   React.useEffect(() => {
-    const traeExperiencias = async () => {
-      let token = await getUserToken()
-      await fetchExperiencias(token)
-        .then(experiencias => {
-          if(experiencias.experiencias.length==0){
-            setNo_disponibles(true)
-          }
-          setExperiencias(experiencias.experiencias)
-          setLoading(false)
-        })
-        .catch(() => {
-          setFailConnection(true)
-          setLoading(false)
-        })
-
-    }
-    traeExperienciasP()
+    traeExperiencias()
   },[])
 
-  const config = {
-    velocityThreshold: 0.1,
-    directionalOffsetThreshold: 80
-  };
+  
 
   return (
 
@@ -106,7 +87,7 @@ function AdminInicioScreen ({ navigation }) {
           <RefreshControl
             //refresh control used for the Pull to Refresh
             refreshing={isLoading}
-            onRefresh={()=>{traeExperienciasP()
+            onRefresh={()=>{traeExperiencias()
             
             }}
           />
