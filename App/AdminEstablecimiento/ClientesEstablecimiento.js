@@ -8,6 +8,7 @@ import { API_URL } from "@env"
 import { CameraRoll } from '@react-native-community/cameraroll';
 import * as Permissions from 'expo-permissions';
 import * as MediaLibrary from 'expo-media-library';
+import {StylosFont} from '../FontTrajan';
 
 const ClientesEstablecimiento = ({ route }) => {
 
@@ -38,18 +39,27 @@ const ClientesEstablecimiento = ({ route }) => {
     const { data } = route.params;
 
     const styles = StyleSheet.create({
-        container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-        head: { height: 40, backgroundColor: '#f1f8ff' },
-        text: { margin: 6 }
+        container: { flex: 1, padding: 10, paddingTop: 30, backgroundColor: '#fff' },
+        head: { height: 50, backgroundColor: '#5FA39D',borderRadius:5,marginBottom:7, },
+        contenido: { backgroundColor: '#DFDFDF',borderRadius:5,marginBottom:7},
+        text: { margin: 6, textAlign: 'center' },
+        textBlanco: { margin: 6, textAlign: 'center',color:'#FFFFFF' },
+        
     });
 
     return (
         <View style={styles.container}>
-            <Table borderStyle={{ borderWidth: 2, borderColor: '#c8e1ff' }}>
-                <Row data={['Nombre', 'Teléfono', 'Correo']} style={styles.head} textStyle={styles.text} />
-                <Rows data={data} textStyle={styles.text} />
+            <View style={StylosCPG.titulo}>
+            <Text style={StylosFont.fuenteCentrada}>
+                  Tus Clientes
+                </Text>
+            </View>
+            <Table borderStyle={{ borderWidth: 0, }}>
+                <Row data={['NOMBRE', 'TELÉFONO', 'CORREO']} style={styles.head} textStyle={styles.textBlanco} />
+                <Rows data={data} textStyle={styles.text} style={styles.contenido} />
             </Table>
             <Button
+            buttonStyle={StylosCPG.colorBoton}
                 title="DESCARGAR REPORTE"
                 color="#A99169"
                 onPress={() => {
@@ -60,5 +70,42 @@ const ClientesEstablecimiento = ({ route }) => {
         </View>
     )
 }
-
+const StylosCPG = StyleSheet.create({
+    container: {
+      backgroundColor:"#FFFFFF",
+      color: "#FFFFFF",
+      flex:0.6,
+      marginTop:20,
+      marginBottom:20,
+      marginLeft:20,
+      marginRight:20,
+      borderRadius:10,
+      alignContent:'center'
+    },
+    input: {
+      backgroundColor: '#E0E0E0',
+      color: "#9d7f4f",
+      marginBottom: 1,
+      paddingRight: 10,
+      paddingLeft: 10,
+      fontSize: 15,
+      borderRadius:10,
+    },
+    titulo:{
+        marginBottom:20,
+    },
+    textColor:{
+      color: "#FFFFFF",
+    },
+    colorBoton: {
+      backgroundColor: "#9d7f4f",
+      margin:20,
+    },
+    numeroexperiencias: {
+    margin: 20,
+    backgroundColor:'#5FA39D',
+    padding:15,
+    borderRadius:10,
+    },
+  });
 export { ClientesEstablecimiento }

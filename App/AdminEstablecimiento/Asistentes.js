@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { Text, View, SafeAreaView, FlatList, Alert,RefreshControl } from 'react-native';
-import { Card,Button } from 'react-native-elements';
+import { Text, View, SafeAreaView, FlatList, Alert, RefreshControl, StyleSheet } from 'react-native';
+import { Card, Button } from 'react-native-elements';
 import { API_URL } from "@env";
 import { getUserToken } from '../../Storage/userToken';
 import { ActivityIndicatorCPG } from '../ActivityIndicatorCPG'
 import { FailConnectionCPG } from '../FailConnectionCPG'
 import { SinAsistentes } from './SinAsistentes'
+import { StylosFont } from '../FontTrajan';
 
-const Asistente = ({ item ,setUpdated}) => {
+const Asistente = ({ item, setUpdated, updated }) => {
 
-    const inactivarAsistente=async ()=>{
+    const inactivarAsistente = async () => {
         let token = await getUserToken();
         return fetch(`${API_URL}/adminEstablecimiento/inactivar/${item.id_user}`, {
             method: 'PUT',
@@ -25,46 +26,51 @@ const Asistente = ({ item ,setUpdated}) => {
                 return json;
             })
             .catch((error) => {
+                console.log(error)
                 throw error
             });
     }
 
 
     return (
-        <Card containerStyle={{ padding: 0 }} >
+        <Card containerStyle={{ padding: 10, borderRadius: 10, }} >
             <View>
-            <View>
-                <Text>{item.nombre_usuario}</Text>
-                <Text>{item.email}</Text>
-            </View>
-            <View>
-            <Button
-            title='INACTIVAR'
-            onPress={() => {
-                setUpdated(false)
-                Alert.alert('Confirmación','Confirma inactivar al asistente',
-                [
-                    {
-                      text: "Cancelar",
-                      style: "cancel"
-                    },
-                    { text: "Inactivar", onPress: () => {
-                        inactivarAsistente()
-                        .then((json)=>{
-                            if(json.success){
-                                Alert.alert('Confirmación',json.success);
-                                setUpdated(true)
-                            }
-                        })
-                        .catch(
-                            Alert.alert('Error','Error de conexión al servidor')
-                        )
-                    } }
-                  ],
-                  { cancelable: true })
-            }}
-            ></Button>
-            </View>
+                <View>
+                    <Text style={{ fontSize: 20, textAlign: 'center', borderBottomColor: '#a3a3a3', borderBottomWidth: 1, }}>{item.nombre_usuario}</Text>
+                    <Text style={{ textAlign: 'center', margin: 5, }}>{item.email}</Text>
+                </View>
+                <View>
+                    <Button
+                        title='INACTIVAR'
+                        buttonStyle={StylosCPG.colorBoton}
+                        onPress={() => {
+                            Alert.alert('Confirmación', 'Confirma inactivar al asistente',
+                                [
+                                    {
+                                        text: "Cancelar",
+                                        style: "cancel"
+                                    },
+                                    {
+                                        text: "Inactivar", onPress: () => {
+                                            inactivarAsistente()
+                                                .then((json) => {
+                                                    if (json.success) {
+                                                        Alert.alert('Confirmación', json.success);
+                                                        setUpdated(!updated)
+                                                    }
+                                                })
+                                                .catch((error)=>{
+                                                    Alert.alert('Error', 'Error de conexión al servidor')
+                                                }
+                                                    
+                                                )
+                                        }
+                                    }
+                                ],
+                                { cancelable: true })
+                        }}
+                    ></Button>
+                </View>
             </View>
         </Card>
     )
@@ -72,16 +78,16 @@ const Asistente = ({ item ,setUpdated}) => {
 
 
 
-const Asistentes = ({navigation}) => {
+const Asistentes = ({ navigation }) => {
     const [asistentes, setAsistentes] = React.useState();
     const [isLoading, setLoading] = React.useState(true);
     const [failConnection, setFailConnection] = React.useState(false);
     const [no_disponibles, setNo_disponibles] = React.useState(false);
-    const [updated,setUpdated] = React.useState(false);
+    const [updated, setUpdated] = React.useState(false);
 
 
     const renderItem = ({ item }) => (
-        <Asistente item={item} setUpdated={setUpdated}/>
+        <Asistente item={item} setUpdated={setUpdated} updated={updated} />
     );
 
     const fetchAsistentes = (token) => {
@@ -104,9 +110,11 @@ const Asistentes = ({navigation}) => {
     }
 
     const traeAsistentes = async () => {
-        console.log('prueba')
         setLoading(true)
+        setFailConnection(false)
         setNo_disponibles(false)
+
+
         let token = await getUserToken()
         await fetchAsistentes(token)
             .then(asistentes => {
@@ -125,7 +133,10 @@ const Asistentes = ({navigation}) => {
 
     React.useEffect(() => {
         traeAsistentes()
-        console.log(no_disponibles)
+        const unsubscribe = navigation.addListener('focus', () => {
+            traeAsistentes()
+        });
+        return unsubscribe;
     }, [updated])
 
     return (
@@ -137,24 +148,27 @@ const Asistentes = ({navigation}) => {
                     <FailConnectionCPG />
                 ) : (
                         no_disponibles ? (
-                            <SinAsistentes prueba={navigation} update={setUpdated} updated={updated}/>
+                            <SinAsistentes />
                         ) : (
-                                <SafeAreaView style={{ flex: 1 }} >
+                                <SafeAreaView style={StylosCPG.container} >
                                     <FlatList
                                         data={asistentes}
                                         renderItem={renderItem}
                                         keyExtractor={item => item.id_user.toString()}
                                         ListHeaderComponent={
-                                            <Text>TUS ASISTENTES</Text>
+                                            <View style={StylosCPG.titulo}>
+                                                <Text style={StylosFont.fuenteCentrada}>TUS ASISTENTES</Text>
+                                            </View>
                                         }
                                         refreshControl={
                                             <RefreshControl
-                                              //refresh control used for the Pull to Refresh
-                                              refreshing={isLoading}
-                                              onRefresh={()=>{traeAsistentes()
-                                              }}
+                                                //refresh control used for the Pull to Refresh
+                                                refreshing={isLoading}
+                                                onRefresh={() => {
+                                                    traeAsistentes()
+                                                }}
                                             />
-                                          }
+                                        }
                                     />
                                 </SafeAreaView>
                             )
@@ -170,5 +184,41 @@ const Asistentes = ({navigation}) => {
 
 
 }
+
+const StylosCPG = StyleSheet.create({
+    container: {
+        backgroundColor: "#FFFFFF",
+        color: "#FFFFFF",
+        flex: 1,
+
+        alignContent: 'center'
+    },
+    input: {
+        backgroundColor: '#E0E0E0',
+        color: "#9d7f4f",
+        marginBottom: 1,
+        paddingRight: 10,
+        paddingLeft: 10,
+        fontSize: 15,
+        borderRadius: 10,
+    },
+    titulo: {
+        margin: 10,
+    },
+    textColor: {
+        color: "#FFFFFF",
+    },
+    colorBoton: {
+        backgroundColor: "#9d7f4f",
+        margin: 20,
+    },
+    numeroexperiencias: {
+        margin: 20,
+        backgroundColor: '#5FA39D',
+        padding: 15,
+        borderRadius: 10,
+    },
+});
+
 
 export { Asistentes }

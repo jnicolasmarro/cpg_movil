@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {AuthContext} from '../../context/AuthContext'
 import { UserContext } from '../../context/UserContext'
-import { View, Button, Text,StyleSheet,StatusBar,Alert } from 'react-native';
-import { Input } from 'react-native-elements'
+import { View,  Text,StyleSheet,StatusBar,Alert } from 'react-native';
+import { Button, Input } from 'react-native-elements'
 import { getUser } from './getAsistenteEstablecimiento'
 import { getUserToken } from '../../Storage/userToken'
 import {setUser} from '../AdminEstablecimiento/setUser'
+import {StylosFont} from '../FontTrajan';
 
 function AsistenteCuentaScreen() {
 
@@ -62,7 +63,7 @@ function AsistenteCuentaScreen() {
     }, [actualizado])
     const StylosCPG = StyleSheet.create({
       container: {
-        backgroundColor: '#111111',
+        
         flex: 1,
         padding: 20,
         justifyContent: 'center'
@@ -73,7 +74,9 @@ function AsistenteCuentaScreen() {
         paddingRight: 10,
         paddingLeft: 10,
         fontSize: 15,
-      },
+        backgroundColor:"#DFDFDF",
+        borderRadius:10,
+    },
       logoHome: {
         width: 187,
         height: 105,
@@ -97,24 +100,32 @@ function AsistenteCuentaScreen() {
         textAlign: 'center',
         color: "#A99169",
         marginBottom: 45
-      }
+      },
+      noBorde:{
+            
+        borderBottomWidth:0.
+    },
     });
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={StylosCPG.container}>
         <StatusBar hidden={true} />
-        <Text style={StylosCPG.titulo}>MI CUENTA DE ASISTENTE</Text>
-        <Text>{establecimiento}</Text>
+        <Text style={StylosFont.fuenteCentrada}>MI CUENTA DE ASISTENTE</Text>
+        <Text style={StylosCPG.titulo}>{establecimiento}</Text>
         <Input
           placeholder='NOMBRE'
           inputStyle={StylosCPG.input}
           value={nombre}
           onChangeText={setNombre}
+          inputContainerStyle={StylosCPG.noBorde}
+          placeholderTextColor="#9d7f4f"
         />
         <Input
           placeholder='EMAIL'
           inputStyle={StylosCPG.input}
           value={email}
           onChangeText={setEmail}
+          inputContainerStyle={StylosCPG.noBorde}
+          placeholderTextColor="#9d7f4f"
         />
         <Input
           placeholder='NUMERO CELULAR'
@@ -122,6 +133,8 @@ function AsistenteCuentaScreen() {
           value={celular}
           onChangeText={setCelular}
           keyboardType="numeric"
+          inputContainerStyle={StylosCPG.noBorde}
+          placeholderTextColor="#9d7f4f"
         />
         <Input
           placeholder='CONTRASEÑA ACTUAL'
@@ -130,6 +143,8 @@ function AsistenteCuentaScreen() {
           value={contraseñaActual}
           onChangeText={setContraseñaActual}
           secureTextEntry
+          inputContainerStyle={StylosCPG.noBorde}
+          placeholderTextColor="#9d7f4f"
         />
         <Input
           placeholder='NUEVA CONTRASEÑA'
@@ -137,9 +152,12 @@ function AsistenteCuentaScreen() {
           value={contraseñaNueva}
           onChangeText={setContraseñaNueva}
           secureTextEntry
+          inputContainerStyle={StylosCPG.noBorde}
+          placeholderTextColor="#9d7f4f"
         />
         <View style={StylosCPG.buttonsContainer}>
           <Button
+            
             title="ACTUALIZAR"
             icon={{
               name: 'rotate-right',
@@ -147,14 +165,9 @@ function AsistenteCuentaScreen() {
               size: 15,
               color: 'white',
             }}
-            iconContainerStyle={{ marginRight: 0 }}
-            titleStyle={{ fontWeight: '700' }}
-            buttonStyle={{
-              backgroundColor: 'rgba(90, 154, 230, 1)',
-              borderColor: 'transparent',
-              borderWidth: 0,
-              borderRadius: 30,
-            }}
+            iconContainerStyle={{ marginRight: 10 }}
+            titleStyle={{ fontWeight: '400' }}
+            buttonStyle={StylosCPG.colorBoton}
             onPress={ActualizarAdminEsta}
   
           />
@@ -167,15 +180,11 @@ function AsistenteCuentaScreen() {
               color: 'white',
             }}
             iconRight
-            iconContainerStyle={{ marginLeft: 0 }}
-            titleStyle={{ fontWeight: '700' }}
-            buttonStyle={{
-              backgroundColor: 'rgba(199, 43, 98, 1)',
-              borderColor: 'transparent',
-              borderWidth: 0,
-              borderRadius: 30,
-            }}
-            containerStyle={{ width: 150 }}
+            iconContainerStyle={{ marginLeft: 10 }}
+            titleStyle={{ fontWeight: '400' }}
+         
+          buttonStyle={StylosCPG.colorBoton}
+          containerStyle={{ width: 150 }}
             onPress={signOut}
   
           />

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { View, StyleSheet, StatusBar,Text } from 'react-native';
 import {Button} from 'react-native-elements'
 
-function SinAsistentes(props){
+function SinAsistentes(){
 
     const StylosCPG = StyleSheet.create({
       container: {
@@ -24,13 +24,6 @@ function SinAsistentes(props){
       <View style={StylosCPG.container}>
         <StatusBar hidden={true} />
           <Text style={StylosCPG.texto}>Sin asistentes disponibles en el momento</Text>
-          <Button
-          title='ACTUALIZAR'
-          onPress={()=>{
-            props.update(!props.updated)
-            props.prueba.navigate('Asistentes')
-          }}
-          ></Button>
       </View>
       
     )

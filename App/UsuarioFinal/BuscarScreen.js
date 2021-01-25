@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, StatusBar, FlatList } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, StatusBar, FlatList, Alert } from 'react-native';
 import { SearchBar, CheckBox } from 'react-native-elements';
 import { getUserToken } from '../../Storage/userToken'
 import { API_URL } from "@env"
@@ -32,7 +32,7 @@ function BuscarScreen({navigation}) {
     })
       .then((response) => response.json())
       .then((json) => {
-        setResultados(json)
+        return json
       })
       .catch((error) => {
         throw error
@@ -46,17 +46,20 @@ function BuscarScreen({navigation}) {
 
   const StylosCPG = StyleSheet.create({
     container: {
-      backgroundColor: '#111111',
-      flex: 1,
-      padding: 20,
-      justifyContent: 'center'
+      backgroundColor: '#5FA39D',
+      color: "#FFFFFF",
     },
     input: {
-      color: "#A99169",
+      
+      backgroundColor: '#35605A',
+      color: "#FFFFFF",
       marginBottom: 1,
       paddingRight: 10,
       paddingLeft: 10,
       fontSize: 15,
+    },
+    textColor:{
+      color: "#FFFFFF",
     },
     logoHome: {
       width: 187,
@@ -68,7 +71,7 @@ function BuscarScreen({navigation}) {
       alignItems: 'center',
     },
     colorBoton: {
-      backgroundColor: "#A99169",
+      backgroundColor: "#279A92",
     },
     buttonsContainer: {
       flexDirection: 'row',
@@ -82,11 +85,11 @@ function BuscarScreen({navigation}) {
     titulo: {
       fontSize: 20,
       textAlign: 'center',
-      color: "#A99169",
+      color: "#279A92",
       marginBottom: 45
     }
   });
-
+  
   return (
     
       
@@ -99,12 +102,28 @@ function BuscarScreen({navigation}) {
         ListHeaderComponent={
           <>
              <SearchBar
+        containerStyle ={StylosCPG.container}
+        inputContainerStyle ={StylosCPG.input}
+        placeholderTextColor = "#FFFFFF"
+        iconStyle={{color:'#fff'}}
+        inputStyle ={{color:'#fff'}}
+        leftIconStyle ={{color:'#fff'}}
+       
+       
         placeholder="Buscar"
         value={busqueda}
         onChangeText={value => {
           setSearch(value);
           if(value){
-            realizarBusqueda(value);
+             realizarBusqueda(value)
+            .then((resultados)=>{
+              setResultados(resultados);
+            }
+
+            )
+            .catch((error)=>{
+              Alert.alert('Error','Por favor valida tu conexión a la red.')
+            });
           }else{
             setResultados([])
           }
@@ -115,6 +134,7 @@ function BuscarScreen({navigation}) {
         justifyContent: 'center',
       }}>
         <CheckBox
+          checkedColor  = "#A99169"
           title='Restaurantes'
           containerStyle={{ flex: 1 }}
           checked={restaurantes}
@@ -127,6 +147,7 @@ function BuscarScreen({navigation}) {
           }}
         />
         <CheckBox
+          checkedColor  = "#A99169"
           title='Experiencias'
           containerStyle={{ flex: 1 }}
           checked={experiencias}

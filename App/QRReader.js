@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Text,Image, StyleSheet,Dimensions, Alert } from 'react-native';
+import { Text,Image, StyleSheet,Dimensions, Alert,View } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import {getUserToken} from '../Storage/userToken'
 import { API_URL } from "@env"
+import {StylosFont} from './FontTrajan';
 
 export default function QRReader() {
 
@@ -45,6 +46,10 @@ export default function QRReader() {
       }
 
     })
+    .catch((error)=>{
+      Alert.alert('Error','Error de conexión, por favor valide la conexión a la red.')
+      setScanned(false);
+    })
 
     setScanned(false);
 
@@ -57,8 +62,15 @@ export default function QRReader() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    paddingTop: 0,
+    backgroundColor: '#9d7f4f'
   },
+  cameraContainer: {
+    marginHorizontal: 0, marginLeft: 0, marginStart: 0,
+    paddingHorizontal: 0, paddingLeft: 0, paddingStart: 0,
+    height: '115%',
+    padding: 0
+},
   qr: {
     marginTop: '20%',
     marginBottom: '20%',
@@ -111,14 +123,18 @@ const styles = StyleSheet.create({
   }
 
   return (
+    
+        <View  style={{ flex: 1, backgroundColor: '#000', padding: 0 }}>
     <BarCodeScanner
     onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={[StyleSheet.absoluteFill, styles.container]}>
-        <Text style={styles.description}>Escanee el QR de la experiencia</Text>
+    style={[StyleSheet.absoluteFillObject,styles.cameraContainer,{alignItems:'center'}]}>
+        <Text style={[styles.description,StylosFont.fuenteCentrada]}>Escanee el QR de la experiencia</Text>
         <Image
           style={styles.qr}
           source={require('../src/img/QR.png')}
         />
       </BarCodeScanner>
+      </View>
+      
   );
 }

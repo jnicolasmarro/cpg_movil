@@ -1,14 +1,19 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements'
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator, StackView } from '@react-navigation/stack'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Linking from 'expo-linking';
 import { ActivityIndicatorCPG } from '../ActivityIndicatorCPG'
 import { FailConnectionCPG } from '../FailConnectionCPG'
 import { getUserToken } from '../../Storage/userToken'
 import { API_URL } from "@env"
+import {StylosFont} from '../FontTrajan';
 
 
-function SoporteScreen() {
+function SoporteScreen({navigation}) {
 
   const [urlWhatsapp, setUrlWhatsapp] = React.useState();
   const [isLoading, setLoading] = React.useState(true)
@@ -36,6 +41,12 @@ function SoporteScreen() {
   }
 
   React.useEffect(() => {
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      setLoading(true)
+      setFailConnection(false)
+      actualizarLink()
+    });
     const actualizarLink = async () => {
       await obtenerLink()
         .then((json) => {
@@ -48,7 +59,9 @@ function SoporteScreen() {
           setFailConnection(true)
         })
     }
-    actualizarLink()
+
+    return unsubscribe;
+    
   }, [])
 
 
@@ -59,17 +72,31 @@ function SoporteScreen() {
         failConnection ? (
           <FailConnectionCPG />
         ) : (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <Text>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-
-The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</Text>
+            <View style={StylosCPG.container}>
+              <View style={StylosCPG.titulo}>
+              
+              <Text style={StylosFont.fuenteCentrada} >CONTÁCTENOS</Text>
+              </View>
+              <View style={StylosCPG.bloque}>
+                <Text style={StylosCPG.textos}>!Eres parte de nuestro selecto Programa de privilegios, descubra todos los beneficios que tenemos¡</Text>
+              </View>
+              <View style={StylosCPG.bloque}>
+              <Text style={StylosCPG.textosDos}>Envíenos todas sus inquietudes y le estaremos contactando.</Text>
+              </View>
+             <View style={StylosCPG.bloque}>
               <Button
-                title="WHATSAPP"
+                buttonStyle={StylosCPG.colorBoton}
+                title="¿Cómo podemos ayudarte?"
                 color="#A99169"
                 onPress={() => {
                   Linking.openURL(urlWhatsapp);
                 }}
+                
               />
+              </View>
+
+
+
             </View>
           )
       )
@@ -77,5 +104,74 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 
   );
 }
+
+const StylosCPG = StyleSheet.create({
+  container: {
+    backgroundColor: '#FFFFFF',
+    color: "#FFFFFF",
+    flex:0.6,
+    marginTop:100,
+    marginBottom:10,
+    marginLeft:10,
+    marginRight:10,
+    borderRadius:10,
+    
+    alignContent:'center'
+
+  },
+  input: {
+    
+    backgroundColor: '#35605A',
+    color: "#FFFFFF",
+    marginBottom: 1,
+    paddingRight: 10,
+    paddingLeft: 10,
+    fontSize: 15,
+  },
+  textColor:{
+    color: "#FFFFFF",
+  },
+  logoHome: {
+    width: 187,
+    height: 105,
+    justifyContent: 'center',
+    marginBottom: 15,
+  },
+  centro: {
+    alignItems: 'center',
+  },
+  colorBoton: {
+    backgroundColor: "#279A92",
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    width: '100%',
+    marginTop: 0,
+    marginRight: 0,
+    marginLeft: 0,
+    padding: 0
+  },
+  titulo: {
+  marginBottom: 20,
+  marginTop:20,
+  },
+  textos: {
+    fontSize:20,
+    textAlign:'center'
+    },
+  textosDos: {
+    fontSize:18,
+    textAlign:'center',
+    color:'#575756',
+      },
+    bloque: {
+    marginTop:10,
+    marginBottom:10,
+    marginLeft:10,
+    marginRight:10,
+      },
+});
+
 
 export { SoporteScreen };

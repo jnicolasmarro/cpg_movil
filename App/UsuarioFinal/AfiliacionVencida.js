@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { View, StyleSheet, StatusBar,Text } from 'react-native';
 
-function SinInformacion(){
+
+function AfiliacionVencida(){
 
     const StylosCPG = StyleSheet.create({
       container: {
@@ -22,11 +23,11 @@ function SinInformacion(){
       
       <View style={StylosCPG.container}>
         <StatusBar hidden={true} />
-          <Text style={StylosCPG.texto}>Aún no existen experiencias registradas</Text>
+          <Text style={StylosCPG.texto}>Tu afiliación se ha vencido.</Text>
       </View>
       
     )
   
   }
 
-  export {SinInformacion}
+  export {AfiliacionVencida}

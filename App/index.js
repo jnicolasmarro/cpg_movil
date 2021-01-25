@@ -10,7 +10,6 @@ import * as Linking from 'expo-linking';
 
 // Screens
 import {SplashScreen} from './SplashScreen'
-
 import {TabUsuarioScreen} from './UsuarioFinal/TabUsuarioScreen'
 import {Admin} from './AdminEstablecimiento/TabAdminScreen'
 import Asis from './Asistente/Asis'
@@ -122,11 +121,12 @@ function SignInScreen({ navigation }) {
         <View>
       <Button
         title="Olvidé mi contraseña"
+        titleStyle={{color:"#A99169"}}
         type="clear"
         onPress={() => {
           Linking.openURL(`${API_URL}/auth/solicitar_cambio`);
         }}
-      />
+      ></Button>
       </View>
       </View>
     </View>
@@ -241,6 +241,7 @@ export default function App({ navigation }) {
   );
 
   const selectViewRol = (rol)=>{
+    console.log(rol);
     if(rol == 2)
     return TabUsuarioScreen;
     if(rol == 3)
@@ -271,7 +272,7 @@ export default function App({ navigation }) {
 
   async function getToken(data) {
     try {
-      let response = await fetch(`${API_URL}/auth/singin`, {
+      let response = await fetch(`${API_URL}/auth/signin`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -285,13 +286,13 @@ export default function App({ navigation }) {
       let json = await response.json();
       return json;
     } catch (error) {
-      console.error(error);
+      throw error
     }
 
   }
 
   const registro = (data) => {
-    return fetch(`${API_URL}/auth/singup`, {
+    return fetch(`${API_URL}/auth/signup`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -311,20 +312,35 @@ export default function App({ navigation }) {
         return json
       })
       .catch((error) => {
-        throw Alert.alert('Error', 'Error de conexión')
+        throw error
       });
   }
   const authContext = React.useMemo(
     () => ({
       signIn: async data => {
-        let response = await getToken(data)
-        if (response.error) {
-          Alert.alert("Error", response.error)
-        } else {
-          
-          storeData(response.token)
-          dispatch({ type: 'SIGN_IN', token: response.token });
+        let response;
+        await getToken(data)
+        .then((json_res)=>{
+          response=json_res
+        })
+        .catch((error)=>{
+          Alert.alert('Error', 'Error de conexión')
         }
+        )
+        if(response){
+          if (response.errores) {
+            let errores = ""
+                response.errores.forEach(error => {
+                  errores = error + `\n` + errores
+                });
+                Alert.alert("Error", errores)
+          } else {
+            console.log(response.token);
+            storeData(response.token)
+            dispatch({ type: 'SIGN_IN', token: response.token });
+          }
+        }
+        
       },
       signOut: () => {
         dispatch({ type: 'SIGN_OUT' });
@@ -343,20 +359,28 @@ export default function App({ navigation }) {
         if (!data.checked) {
           Alert.alert("Error", "No ha aceptado terminos y condiciones")
         } else {
-          let response = await registro(data)
-          if (response.error) {
-
-            let errores = ""
-            response.error.forEach(error => {
-              errores = error + `\n` + errores
-
-            });
-            Alert.alert("Error", errores)
-          } else {
-            storeData(response.token)
-            Alert.alert("Registro exitoso", "Te has registrado correctamente")
-            dispatch({ type: 'SIGN_IN', token: response.token });
+          let response;
+           await registro(data)
+          .then((res_json)=>{
+            response=res_json;
+          })
+          .catch((error)=>{
+            Alert.alert('Error', 'Error de conexión')
           }
+            )
+            if(response){
+              if (response.errores) {
+                let errores = ""
+                response.errores.forEach(error => {
+                  errores = error + `\n` + errores
+                });
+                Alert.alert("Error", errores)
+              } else {
+                storeData(response.token)
+                Alert.alert("Registro exitoso", "Te has registrado correctamente")
+                dispatch({ type: 'SIGN_IN', token: response.token });
+              }
+            }
         }
       },
     }),
@@ -402,6 +426,7 @@ export default function App({ navigation }) {
               />
             </>
           ) : (
+
                   <Stack.Screen name="Home" component={selectViewRol(state.userToken.rol)} />
               )}
         </Stack.Navigator>

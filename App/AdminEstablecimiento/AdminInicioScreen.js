@@ -3,7 +3,7 @@ import {SafeAreaView,StatusBar,FlatList,Alert} from 'react-native'
 import {Experiencia} from './Experiencia'
 import {ActivityIndicatorCPG} from '../ActivityIndicatorCPG'
 import {getUserToken} from '../../Storage/userToken'
-import {SinExperiencias} from './SinExperiencias'
+import {SinInformacion} from './SinExperiencias'
 import { API_URL } from "@env";
 import {FlingGestureHandler,Directions,State,PanGestureHandler } from 'react-native-gesture-handler';
 import { RefreshControl} from 'react-native'
@@ -41,6 +41,8 @@ function AdminInicioScreen ({ navigation }) {
 
   const traeExperiencias = async () => {
     setLoading(true)
+    setFailConnection(false)
+    setNo_disponibles(false)
     let token = await getUserToken()
     await fetchExperiencias(token)
       .then(experiencias => {
@@ -58,7 +60,11 @@ function AdminInicioScreen ({ navigation }) {
   }
 
   React.useEffect(() => {
-    traeExperiencias()
+      traeExperiencias()
+    const unsubscribe = navigation.addListener('focus', () => {
+      traeExperiencias()
+    });
+    return unsubscribe;
   },[])
 
   
@@ -74,7 +80,7 @@ function AdminInicioScreen ({ navigation }) {
           <FailConnectionCPG />
         ) : (
           no_disponibles?(
-          <SinExperiencias/>
+          <SinInformacion/>
           ):(
             
           <SafeAreaView>

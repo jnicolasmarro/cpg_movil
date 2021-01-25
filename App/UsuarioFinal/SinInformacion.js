@@ -2,7 +2,7 @@ import * as React from 'react'
 import { View, StyleSheet, StatusBar,Text } from 'react-native';
 
 
-function SinExperiencias(){
+function SinInformacion(props){
 
     const StylosCPG = StyleSheet.create({
       container: {
@@ -23,11 +23,11 @@ function SinExperiencias(){
       
       <View style={StylosCPG.container}>
         <StatusBar hidden={true} />
-          <Text style={StylosCPG.texto}>Sin experiencias disponibles en esta categoría</Text>
+    <Text style={StylosCPG.texto}>{props.informacion}</Text>
       </View>
       
     )
   
   }
 
-  export {SinExperiencias}
+  export {SinInformacion}

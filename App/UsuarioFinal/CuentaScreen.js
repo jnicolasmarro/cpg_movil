@@ -28,21 +28,20 @@ function CuentaScreen({ navigation }) {
       input: {
         color: "#A99169",
         marginBottom: 1,
-        paddingRight: 10,
-        paddingLeft: 10,
+        paddingRight: 15,
+        paddingLeft: 15,
         fontSize: 15,
+        backgroundColor:'#E0E0E0',
+        borderRadius:10,
+        
+
       },
-      logoHome: {
-        width: 187,
-        height: 105,
-        justifyContent: 'center',
-        marginBottom: 15,
-      },
-      centro: {
-        alignItems: 'center',
-      },
+    
       colorBoton: {
         backgroundColor: "#A99169",
+      },
+      colorBotonDos: {
+        backgroundColor: "#279A92",
       },
       buttonsContainer: {
         flexDirection: 'row',
@@ -55,7 +54,10 @@ function CuentaScreen({ navigation }) {
         textAlign: 'center',
         color: "#A99169",
         marginBottom: 45
-      }
+      },
+      noBorde:{
+        borderBottomWidth:0.
+    },
     });
   
   
@@ -97,7 +99,7 @@ function CuentaScreen({ navigation }) {
       })
       .catch(()=>{
 
-        throw Alert.alert('Error','Error de conexión al servidor \n Valida tu conexión a la red')
+        Alert.alert('Error','Error de conexión al servidor \n Valida tu conexión a la red')
 
       })
   
@@ -144,19 +146,23 @@ function CuentaScreen({ navigation }) {
           inputStyle={StylosCPG.input}
           value={nombre}
           onChangeText={setNombre}
+          inputContainerStyle={StylosCPG.noBorde}
         />
         <Input
           placeholder='NÚMERO DE IDENTIFICACIÓN'
           inputStyle={StylosCPG.input}
+          placeholderTextColor="#9d7f4f"
           value={numero_identificacion}
           onChangeText={setNumero_identificacion}
           keyboardType="numeric"
+          inputContainerStyle={StylosCPG.noBorde}
         />
         <Input
           placeholder='EMAIL'
           inputStyle={StylosCPG.input}
           value={email}
           onChangeText={setEmail}
+          inputContainerStyle={StylosCPG.noBorde}
         />
         <Input
           placeholder='NUMERO CELULAR'
@@ -164,6 +170,7 @@ function CuentaScreen({ navigation }) {
           value={celular}
           onChangeText={setCelular}
           keyboardType="numeric"
+          inputContainerStyle={StylosCPG.noBorde}
         />
         <Input
           placeholder='CONTRASEÑA ACTUAL'
@@ -172,6 +179,8 @@ function CuentaScreen({ navigation }) {
           value={contraseñaActual}
           onChangeText={setContraseñaActual}
           secureTextEntry
+          placeholderTextColor="#9d7f4f"
+          inputContainerStyle={StylosCPG.noBorde}
         />
         <Input
           placeholder='NUEVA CONTRASEÑA'
@@ -179,6 +188,8 @@ function CuentaScreen({ navigation }) {
           value={contraseñaNueva}
           onChangeText={setContraseñaNueva}
           secureTextEntry
+          placeholderTextColor="#9d7f4f"
+          inputContainerStyle={StylosCPG.noBorde}
         />
         <View style={StylosCPG.buttonsContainer}>
           <Button
@@ -189,14 +200,9 @@ function CuentaScreen({ navigation }) {
               size: 15,
               color: 'white',
             }}
-            iconContainerStyle={{ marginRight: 0 }}
-            titleStyle={{ fontWeight: '700' }}
-            buttonStyle={{
-              backgroundColor: 'rgba(90, 154, 230, 1)',
-              borderColor: 'transparent',
-              borderWidth: 0,
-              borderRadius: 30,
-            }}
+            iconContainerStyle={{ marginRight: 10 }}
+            titleStyle={{ fontWeight: '400' }}
+            buttonStyle={StylosCPG.colorBotonDos}
             onPress={actualizarUsuario}
           />
           <Button
@@ -208,14 +214,10 @@ function CuentaScreen({ navigation }) {
               color: 'white',
             }}
             iconRight
-            iconContainerStyle={{ marginLeft: 0 }}
-            titleStyle={{ fontWeight: '700' }}
-            buttonStyle={{
-              backgroundColor: 'rgba(199, 43, 98, 1)',
-              borderColor: 'transparent',
-              borderWidth: 0,
-              borderRadius: 30,
-            }}
+            iconContainerStyle={{ marginLeft: 10 }}
+            titleStyle={{ fontWeight: '400' }}
+            buttonStyle={StylosCPG.colorBoton}
+           
             containerStyle={{ width: 150 }}
             onPress={signOut}
           />

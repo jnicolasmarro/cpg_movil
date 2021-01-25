@@ -5,7 +5,8 @@ import { API_URL } from "@env"
 import { ActivityIndicatorCPG } from '../ActivityIndicatorCPG'
 import { FailConnectionCPG } from '../FailConnectionCPG'
 import {Experiencia} from './Experiencia'
-import {SinExperiencias} from './SinExperiencias'
+import {SinInformacion} from './SinInformacion'
+import {AfiliacionVencida} from './AfiliacionVencida'
 
 function ExpTresScreen({ navigation }) {
 
@@ -17,6 +18,7 @@ function ExpTresScreen({ navigation }) {
   const [failConnection, setFailConnection] = React.useState(false)
   const [disponibles_experiencias, setExperiencias] = React.useState()
   const [no_disponibles, setNo_disponibles] = React.useState(false)
+  const [afiliacion, setAfiliacion] = React.useState(true)
   const fetchExperiencias = (token) => {
     return fetch(`${API_URL}/experiencia/bienestar`, {
       method: 'GET',
@@ -40,13 +42,24 @@ function ExpTresScreen({ navigation }) {
     const traeExperiencias = async () => {
       let token = await getUserToken()
       await fetchExperiencias(token)
-        .then(experiencias => {
-          if(experiencias.experiencias.length==0){
-            setNo_disponibles(true)
-          }
+      .then((experiencias) => {
+        setLoading(false)
+        if(experiencias.error){
+          setAfiliacion(false)
+          
+        }else{
+        if(experiencias.experiencias.length==0){
+          setNo_disponibles(true)
+          
+        }else{
           setExperiencias(experiencias.experiencias)
-          setLoading(false)
-        })
+          
+        }
+        
+        
+      }
+    }
+    )
         .catch(() => {
           setFailConnection(true)
           setLoading(false)
@@ -68,18 +81,21 @@ function ExpTresScreen({ navigation }) {
         failConnection ? (
           <FailConnectionCPG />
         ) : (
-          no_disponibles?(
-          <SinExperiencias/>
-          ):(
-          <SafeAreaView>
-              <StatusBar hidden={true} />
-              <FlatList
-        data={disponibles_experiencias}
-        renderItem={renderItem}
-        keyExtractor={item => item.id_experiencia.toString()}
-      />
-            </SafeAreaView>
-          )
+          afiliacion?(no_disponibles?(
+            <SinInformacion informacion='Sin experiencias disponibles en esta categoría en el momento'/>
+            ):(
+            <SafeAreaView>
+                <StatusBar hidden={true} />
+                <FlatList
+          data={disponibles_experiencias}
+          renderItem={renderItem}
+          keyExtractor={item => item.id_experiencia.toString()}
+        />
+              </SafeAreaView>
+            )):(
+              <AfiliacionVencida/>
+            )
+          
             
 
 

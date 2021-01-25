@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { View, Text, Alert} from 'react-native';
+import { View, Text, Alert, StyleSheet} from 'react-native';
 import { Button, Input} from 'react-native-elements';
 import {getUserToken} from '../../Storage/userToken'
 import { API_URL } from "@env"
+import {StylosFont} from '../FontTrajan';
 
 function AdminCrearScreen ({ navigation }) {
 
@@ -34,7 +35,7 @@ function AdminCrearScreen ({ navigation }) {
       
     })
     .catch((error)=>{
-      throw Alert.alert("Error","Error de conexión")
+      Alert.alert("Error","Error de conexión")
     })
 
   }
@@ -70,35 +71,120 @@ function AdminCrearScreen ({ navigation }) {
   const [password, setPassword] = React.useState('');
    
     return (
-       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-         <Text>Crear Asistente</Text>
+       <View style={StylosCPG.container}>
+         <View style={StylosCPG.titulo}>
+         <Text style={StylosFont.fuenteCentrada}>Crear Asistente</Text>
+         </View>
          <Input
             placeholder='NOMBRE'
             value={nombre}
             onChangeText={setNombre}
+            inputStyle={StylosCPG.input}
+            placeholderTextColor="#9d7f4f"
+            inputContainerStyle={StylosCPG.noBorder}
           />
           <Input
             placeholder='EMAIL'
             value={email}
             onChangeText={setEmail}
+            inputStyle={StylosCPG.input}
+            placeholderTextColor="#9d7f4f"
+            inputContainerStyle={StylosCPG.noBorder}
           />
           <Input
             placeholder='NUMERO CELULAR'
             keyboardType="numeric"
             value={celular}
             onChangeText={setCelular}
+            inputStyle={StylosCPG.input}
+            placeholderTextColor="#9d7f4f"
+            inputContainerStyle={StylosCPG.noBorder}
           />
           <Input
             placeholder='CONTRASEÑA'
             secureTextEntry
             value={password}
             onChangeText={setPassword}
+            inputStyle={StylosCPG.input}
+            placeholderTextColor="#9d7f4f"
+            inputContainerStyle={StylosCPG.noBorder}
           />
-         <Button title={"Crear Asistente"} onPress={registrar} />
+         <Button title={"Crear Asistente"} onPress={registrar} 
+         buttonStyle={StylosCPG.colorBoton}
+         />
          </View>
        );
   }
-
+  const StylosCPG = StyleSheet.create({
+    container: {
+      backgroundColor: '#FFFFFF',
+      color: "#FFFFFF",
+      flex:1,
+      marginTop:20,
+      marginBottom:20,
+      marginLeft:20,
+      marginRight:20,
+      borderRadius:10,
+      alignContent:'center'
+  
+    },
+    input: {
+      backgroundColor: '#E0E0E0',
+      color: "#9d7f4f",
+      marginBottom: 1,
+      paddingRight: 10,
+      paddingLeft: 10,
+      fontSize: 15,
+      borderRadius:10,
+    },
+    textColor:{
+      color: "#FFFFFF",
+    },
+    logoHome: {
+      width: 187,
+      height: 105,
+      justifyContent: 'center',
+      marginBottom: 15,
+    },
+    centro: {
+      alignItems: 'center',
+    },
+    colorBoton: {
+      backgroundColor: "#9d7f4f",
+      margin:20,
+    },
+    buttonsContainer: {
+      flexDirection: 'row',
+      alignItems: 'stretch',
+      width: '100%',
+      marginTop: 0,
+      marginRight: 0,
+      marginLeft: 0,
+      padding: 0
+    },
+    titulo: {
+    marginBottom: 20,
+    marginTop:20,
+    },
+    textos: {
+      fontSize:20,
+      textAlign:'center'
+      },
+    textosDos: {
+      fontSize:18,
+      textAlign:'center',
+      color:'#575756',
+        },
+      bloque: {
+      marginTop:10,
+      marginBottom:10,
+      marginLeft:10,
+      marginRight:10,
+        },
+      noBorder:{
+        borderBottomColor:'#FFFFFF',
+      },
+  });
  
 
   export default AdminCrearScreen;
