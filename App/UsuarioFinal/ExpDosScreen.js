@@ -20,7 +20,7 @@ function ExpDosScreen({ navigation }) {
   const [no_disponibles, setNo_disponibles] = React.useState(false)
   const [afiliacion, setAfiliacion] = React.useState(true)
   const fetchExperiencias = (token) => {
-    return fetch(`${API_URL}/experiencia/seleccion`, {
+    return fetch(`${API_URL}/experiencia/disponibles/2`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',

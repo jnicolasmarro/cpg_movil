@@ -5,11 +5,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Button, Image, Input} from 'react-native-elements';
 import {getUserToken} from '../Storage/userToken'
 import * as Font from 'expo-font';
-import { API_URL } from "@env"
+import { API_URL,VERSION } from "@env"
 import * as Linking from 'expo-linking';
 
 // Screens
 import {SplashScreen} from './SplashScreen'
+import {VersionScreen} from './VersionScreen'
 import {TabUsuarioScreen} from './UsuarioFinal/TabUsuarioScreen'
 import {Admin} from './AdminEstablecimiento/TabAdminScreen'
 import Asis from './Asistente/Asis'
@@ -23,7 +24,31 @@ import {AuthContext} from '../context/AuthContext'
 
 const Stack = createStackNavigator();
 
+async function validaVersion(){
+  let version;
+  let versionInstalada=VERSION;
+  let validacion;
+  try {
+    let response = await fetch(`${API_URL}/versiones/obtenerVersionAppMovil`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+    let json = await response.json();
+    version = json.version;
+  } catch (error) {
+    throw error
+  }
 
+  if(version==versionInstalada){
+    validacion=true
+  }else{
+    validacion=false
+  }
+  return validacion;
+}
 
 
 function SignInScreen({ navigation }) {
@@ -231,12 +256,18 @@ export default function App({ navigation }) {
             isSignout: true,
             userToken: null,
           };
+          case 'DESACTUALIZADO':
+          return {
+            ...prevState,
+            uptodate: false
+          };
       }
     },
     {
       isLoading: true,
       isSignout: false,
       userToken: null,
+      uptodate:true,
     }
   );
 
@@ -255,6 +286,14 @@ export default function App({ navigation }) {
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
+
+      let version = await validaVersion();
+
+      if (!version){
+        dispatch({ type: 'DESACTUALIZADO'});
+      }
+      
+
       let userToken;
       try {
         userToken = await getUserToken();
@@ -335,9 +374,12 @@ export default function App({ navigation }) {
                 });
                 Alert.alert("Error", errores)
           } else {
-            console.log(response.token);
-            storeData(response.token)
-            dispatch({ type: 'SIGN_IN', token: response.token });
+            if(response.token.interfaz_movil){
+              storeData(response.token)
+              dispatch({ type: 'SIGN_IN', token: response.token });
+            }else{
+              Alert.alert("Error", "El usuario actual no permite el ingreso desde la interfaz móvil.")
+            }
           }
         }
         
@@ -350,7 +392,6 @@ export default function App({ navigation }) {
           } catch (e) {
             // remove error
           }
-          console.log('Done.')
         }
         removeValue();
       },
@@ -376,9 +417,13 @@ export default function App({ navigation }) {
                 });
                 Alert.alert("Error", errores)
               } else {
-                storeData(response.token)
-                Alert.alert("Registro exitoso", "Te has registrado correctamente")
-                dispatch({ type: 'SIGN_IN', token: response.token });
+                if(response.token.interfaz_movil){
+                  storeData(response.token)
+                  Alert.alert("Registro exitoso", "Te has registrado correctamente")
+                  dispatch({ type: 'SIGN_IN', token: response.token });
+                }else{
+                  Alert.alert("Error", "El usuario actual no permite el ingreso desde la interfaz móvil.")
+                }
               }
             }
         }
@@ -391,44 +436,52 @@ export default function App({ navigation }) {
     <AuthContext.Provider value={authContext}>
       <NavigationContainer >
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {state.isLoading ? (
-            // We haven't finished checking for the token yet
-            <Stack.Screen name="Splash" component={SplashScreen} />
-          ) : state.userToken == null ? (
-            // No token found, user isn't signed in
-            <>
-            
-              <Stack.Screen
-                name="Inicial"
-                component={Inicial}
-                options={{
-                  // When logging out, a pop animation feels intuitive
-                  animationTypeForReplace: state.isSignout ? 'pop' : 'push',
-                }}
-              />
-              
-              
-              <Stack.Screen
-                name="SignIn"
-                component={SignInScreen}
-                options={{
-                  // When logging out, a pop animation feels intuitive
-                  animationTypeForReplace: state.isSignout ? 'pop' : 'push',
-                }}
-              />
-              <Stack.Screen
-                name="SingUp"
-                component={SignUpScreen}
-                options={{
-                  // When logging out, a pop animation feels intuitive
-                  animationTypeForReplace: state.isSignout ? 'pop' : 'push',
-                }}
-              />
-            </>
-          ) : (
+          {
+          state.uptodate ? (
 
-                  <Stack.Screen name="Home" component={selectViewRol(state.userToken.rol)} />
-              )}
+            state.isLoading ? (
+              // We haven't finished checking for the token yet
+              <Stack.Screen name="Splash" component={SplashScreen} />
+            ) : state.userToken == null ? (
+              // No token found, user isn't signed in
+              <>
+              
+                <Stack.Screen
+                  name="Inicial"
+                  component={Inicial}
+                  options={{
+                    // When logging out, a pop animation feels intuitive
+                    animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+                  }}
+                />
+                
+                
+                <Stack.Screen
+                  name="SignIn"
+                  component={SignInScreen}
+                  options={{
+                    // When logging out, a pop animation feels intuitive
+                    animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+                  }}
+                />
+                <Stack.Screen
+                  name="SingUp"
+                  component={SignUpScreen}
+                  options={{
+                    // When logging out, a pop animation feels intuitive
+                    animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+                  }}
+                />
+              </>
+            ) : (
+  
+                    <Stack.Screen name="Home" component={selectViewRol(state.userToken.rol)} />
+                )
+
+          ) : (
+            <Stack.Screen name="Version" component={VersionScreen} />
+          )
+          }
         </Stack.Navigator>
       </NavigationContainer>
     </AuthContext.Provider>

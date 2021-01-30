@@ -85,6 +85,7 @@ function AdminCrearScreen ({ navigation }) {
           />
           <Input
             placeholder='EMAIL'
+            keyboardType='email-address'
             value={email}
             onChangeText={setEmail}
             inputStyle={StylosCPG.input}

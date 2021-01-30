@@ -87,7 +87,6 @@ function SignUpScreen({ navigation }) {
           <Input
             placeholder='CREDENCIAL'
             inputStyle={StylosCPG.input}
-            keyboardType="numeric"
             value={codigo}
             onChangeText={setCodigo}
           />

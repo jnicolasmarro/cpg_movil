@@ -3,9 +3,11 @@ import { View, StyleSheet, StatusBar, ActivityIndicator , Alert} from 'react-nat
 import { Image } from 'react-native-elements';
 
 
-function SplashScreen() {
+function VersionScreen() {
 
-
+    React.useEffect(()=>{
+        Alert.alert('Error','Tu aplicación está desactualizada, por favor actualizala.')
+    })
    
 
     const StylosCPG = StyleSheet.create({
@@ -42,5 +44,5 @@ function SplashScreen() {
 }
 
 export {
-    SplashScreen
+    VersionScreen
 }

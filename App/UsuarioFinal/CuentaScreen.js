@@ -109,7 +109,7 @@ function CuentaScreen({ navigation }) {
     }
   
     const setUser = async (token) => {
-      return fetch(`${API_URL}/user/` + token.header_id_user, {
+      return fetch(`${API_URL}/user/actualizarUsuarioFinalMovil/` + token.header_id_user, {
         method: 'PUT',
         headers: {
           Accept: 'application/json',

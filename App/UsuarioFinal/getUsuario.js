@@ -1,7 +1,7 @@
 import { API_URL } from "@env"
 
 const getUser = (token) => {
-    return fetch(`${API_URL}/user/` + token.header_id_user, {
+    return fetch(`${API_URL}/user/obtenerUsuario/` + token.header_id_user, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -12,7 +12,7 @@ const getUser = (token) => {
     })
       .then((response) => response.json())
       .then((json) => {
-        return json;
+        return json.user;
       })
       .catch((error) => {        
         throw error

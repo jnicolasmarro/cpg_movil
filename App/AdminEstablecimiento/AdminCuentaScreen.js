@@ -55,7 +55,7 @@ function AdminCuentaScreen() {
     const [nombre, setNombre] = React.useState(userContext.nombre_usuario);
     const [email, setEmail] = React.useState(userContext.email);
     const [celular, setCelular] = React.useState(userContext.numero_celular);
-    const [establecimiento, setEstablecimiento] = React.useState(userContext.establecimiento.nombre_empresa)
+    const [establecimiento, setEstablecimiento] = React.useState(userContext.establecimiento.nombre_establecimiento)
     const [contraseñaActual, setContraseñaActual] = React.useState("");
     const [contraseñaNueva, setContraseñaNueva] = React.useState("");
     const [actualizado, setActualizado] = React.useState(false);

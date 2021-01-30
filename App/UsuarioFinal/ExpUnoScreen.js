@@ -20,7 +20,7 @@ function ExpUnoScreen({ navigation }) {
   const [disponibles_experiencias, setExperiencias] = React.useState()
   const [no_disponibles, setNo_disponibles] = React.useState(false)
   const fetchExperiencias = (token) => {
-    return fetch(`${API_URL}/experiencia/gastronomicas`, {
+    return fetch(`${API_URL}/experiencia/disponibles/1`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
